@@ -15,38 +15,38 @@ O objetivo deste projeto é desenvolver uma **solução baseada em Inteligência
 
 ---
 
-## 🎯 Desafio Proposto e Objetivos
+## 🎯 Objetivos
 
 ### Objetivo Geral
 Criar um **modelo inteligente de roteamento** que, a partir de um conjunto de pedidos, indique as **rotas ideais** a serem seguidas pelos entregadores, reduzindo tempo de entrega e custos operacionais.
 
 ### Objetivos Específicos
 - Representar a cidade como um **grafo** (nós = pontos, arestas = ruas);
-- Calcular o **menor caminho** entre locais usando **Dijkstra e A***;
+- Calcular o **menor caminho** entre locais usando **Dijkstra**;
 - Resolver o **problema do caixeiro viajante (TSP)** para múltiplas entregas;
 - Distribuir entregas entre múltiplos entregadores;
-- Exibir **tempo estimado de entrega em minutos e horas**;
-- (Opcional) Incorporar dados reais de trânsito ou velocidade média por via.
+- Exibir **tempo estimado de entrega em minutos e horas**.
 
 ---
 
 ## 🧠 Abordagem Adotada
 
-A cidade foi modelada como um **grafo direcionado e ponderado**:
+A cidade foi modelada como um **grafo ponderado**:
 
-- **Nodos (vértices):** representam os bairros, pontos de coleta e entrega.  
-- **Arestas:** representam as ruas ou conexões entre os pontos.  
-- **Pesos:** representam o tempo de deslocamento (em segundos), obtido via estimativas do `osmnx`.
+- **Nodos (vértices):** bairros, pontos de coleta e entrega.  
+- **Arestas:** ruas ou conexões entre pontos.  
+- **Pesos:** tempo de deslocamento em segundos, convertido em minutos.
 
-A partir desse grafo, o sistema aplica algoritmos de **busca e otimização** para encontrar as melhores rotas.
+O modelo aplica algoritmos de **busca e otimização** para calcular rotas eficientes.
 
-### Passos do Modelo:
-1. Criação do grafo da cidade usando `osmnx` (dados reais do OpenStreetMap);
-2. Cálculo de tempo estimado de deslocamento para cada aresta (`travel_time`);
-3. Aplicação de **Dijkstra** para obter o menor caminho entre dois pontos;
-4. Aplicação de **TSP (Travelling Salesman Problem)** para otimizar múltiplas entregas;
-5. Distribuição automática de pedidos entre vários entregadores;
-6. Exibição das rotas e tempo total em **minutos e horas**.
+### Fluxo do Modelo:
+1. Criar grafo da cidade usando `osmnx` (dados do OpenStreetMap).  
+2. Calcular tempo de deslocamento de cada aresta (`travel_time`).  
+3. Aplicar **Dijkstra** para o menor caminho entre dois pontos.  
+4. Resolver **TSP** para múltiplas entregas.  
+5. Distribuir pedidos entre múltiplos entregadores.  
+6. Exibir rotas e tempo total em **minutos e horas**.  
+7. Gerar imagem do grafo (`outputs/grafo.png`).
 
 ---
 
@@ -54,16 +54,15 @@ A partir desse grafo, o sistema aplica algoritmos de **busca e otimização** pa
 
 | Algoritmo | Função | Justificativa |
 |------------|--------|----------------|
-| **Dijkstra** | Encontrar o menor caminho entre dois pontos | Ideal para grafos ponderados com pesos positivos (tempo/distância). |
-| **TSP (Travelling Salesman Problem)** | Encontrar a melhor sequência de visitas para múltiplos destinos | Minimiza o tempo total de entrega para um entregador. |
+| **Dijkstra** | Menor caminho entre dois pontos | Ideal para grafos ponderados com pesos positivos. |
+| **TSP (Travelling Salesman Problem)** | Melhor sequência de visitas | Minimiza o tempo total de entrega para cada entregador. |
 | **Heurística de Distribuição** | Dividir entregas entre entregadores | Distribuição equitativa de pedidos baseada na quantidade. |
-| **A\*** (possível expansão futura) | Busca heurística com custo estimado | Mais eficiente que Dijkstra quando há estimativas de distância. |
 
 ---
 
-## 🧩 Diagrama do Grafo (Modelo Conceitual)
+## 🧩 Diagrama do Grafo
 
-O grafo pode ser visualizado como abaixo:
+Exemplo conceitual do grafo:
 
 ```text
       (Loja)
@@ -74,3 +73,4 @@ O grafo pode ser visualizado como abaixo:
      \        /
       \7min  /6min
        (Entrega3)
+
